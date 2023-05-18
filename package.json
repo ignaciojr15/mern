@@ -4,8 +4,8 @@
   "description": "curso de mern stack",
   "main": "server.js",
   "scripts": {
-   "start": "node server",
-   "server": "nodemon server"
+    "start": "node server",
+    "server": "nodemon server"
   },
   "author": "ignacio",
   "license": "ISC",
@@ -16,7 +16,8 @@
     "express-validator": "^7.0.1",
     "gravatar": "^1.8.2",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.1.1",
+    "mongoose": "^5.13.17",
+    "normalize-url": "^8.0.0",
     "request": "^2.88.2"
   },
   "devDependencies": {

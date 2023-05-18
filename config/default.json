@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://ignacio:spain@atlascluster.cdc0jte.mongodb.net/test?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://ignacio:spain@atlascluster.cdc0jte.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret":"mysecrettoken"
 }
