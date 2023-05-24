@@ -4,6 +4,7 @@ const auth=require('../middleware/auth');
 const Profile = require('../models/Profile')
 const User= require('../models/user')
 const { check, validationResult } = require('express-validator');
+const { normalize } = require('valid-url'); // Importa la función normalize
 // bring in normalize to give us a proper url, regardless of what user entered
 
 router.get('/prueba',(req,res) => {res.send('jose mourinho')})
@@ -32,7 +33,8 @@ router.post(
    
     }
     console.log("hoalsdffd")
-    const {
+     // destructure the request
+     const {
       website,
       skills,
       youtube,
@@ -43,20 +45,47 @@ router.post(
       // spread the rest of the fields we don't need to check
       ...rest
     } = req.body;
-    const profileFields={};
-    profileFields.user=req.user.id;
-    if(company) profileFields.company=company;
-    if(website) profileFields.website=website;
-    if(location) profileFields.location=location;
-    if(bio) profileFields.bio=bio;
-    if(status)profileFields.status=status;
-    if(githubusername)profileFields.githubusername=githubusername;
-    if(skills){
-      console.log(123)
-      profileFields.skills=skills.split(',').map(skill=>skill.trim())
+
+    // build a profile
+    const profileFields = {
+      user: req.user.id,
+      website:
+        website && website !== ''
+          ? normalize(website, { forceHttps: true })
+          : '',
+      skills: Array.isArray(skills)
+        ? skills
+        : skills.split(',').map((skill) => ' ' + skill.trim()),
+      ...rest
+    };
+
+    // Build socialFields object
+    const socialFields = { youtube, twitter, instagram, linkedin, facebook };
+
+    // normalize social fields to ensure valid url
+    for (const [key, value] of Object.entries(socialFields)) {
+      if (value && value.length > 0)
+        socialFields[key] = normalize(value, { forceHttps: true });
     }
-    console.log(req.body.status)
-     res.send('hello');
+    // add to profileFields
+    profileFields.social = socialFields;
+
+    try {
+      // Using upsert option (creates new doc if no match is found):
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: profileFields },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+      //create
+      profile=new Profile(profileFields);
+      await profile.save();
+      return res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).send('Server Error');
+    }
+  
   }
 );
 
