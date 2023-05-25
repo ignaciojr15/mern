@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "server": "nodemon server"
+    "server": "nodemon server.js"
   },
   "author": "ignacio",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.9",
     "express": "^4.18.2",
@@ -18,7 +19,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.13.17",
     "normalize-url": "^8.0.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
