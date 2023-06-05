@@ -1,7 +1,14 @@
 import React, { Fragment, useState } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { registerUser , pruebaL } from '../../action/auth';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Noty from 'noty';
+import 'noty/lib/noty.css';
+import 'noty/lib/themes/sunset.css';
+import { setAlert } from '../../action/alert';
 
-export const Register = () => {
+export const Register = ({setAlert}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,31 +24,18 @@ export const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      console.log('Passwords do not match');
+      new Noty({
+        theme: 'sunset',
+        type: 'error',
+        text: 'las contraseñas no coinciden',
+        timeout: 3000,
+      }).show();
+      
+     setAlert('password do not match','danger')
     } else {
-      const newUser = {
-        name,
-        email,
-        password,
-      };
-
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
-
-        const res = await axios.post(
-          'http://localhost:5000/api/users',
-          newUser,
-          config
-        );
-
-        console.log(res.data);
-      } catch (error) {
-        console.error(error.response.data);
-      }
+      let hola='hello'
+    //  pruebaL({name:hola})
+     registerUser({ name, email, password });
     }
   };
 
@@ -59,7 +53,7 @@ export const Register = () => {
             name="name"
             value={name}
             onChange={(e) => onChange(e)}
-            required
+          
           />
         </div>
         <div className="form-group">
@@ -68,7 +62,7 @@ export const Register = () => {
             placeholder="Email Address"
             value={email}
             onChange={(e) => onChange(e)}
-            required
+           
             name="email"
           />
           <small className="form-text">
@@ -84,7 +78,7 @@ export const Register = () => {
             minLength="6"
             value={password}
             onChange={(e) => onChange(e)}
-            required
+       
           />
         </div>
         <div className="form-group">
@@ -101,8 +95,14 @@ export const Register = () => {
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <Link to='/login'>Sign In</Link>
       </p>
     </Fragment>
   );
 };
+
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, { registerUser, setAlert,pruebaL })(Register);

@@ -5,8 +5,13 @@ import {Landing} from './components/layout/Landing'
 import './App.css';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
+import Alert from './components/layout/Alert';
+//redux
+import { Provider } from 'react-redux';
+import store from './store';
 function App() {
   return (
+    <Provider store={store}>
     <Fragment>
       <Navbar/>
       <section className='container'>
@@ -17,6 +22,7 @@ function App() {
         </Routes>
       </section>
     </Fragment>
+    </Provider>
   );
 }
 
