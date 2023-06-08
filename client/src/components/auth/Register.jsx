@@ -1,20 +1,21 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
-import { registerUser , pruebaL } from '../../action/auth';
+import { registerUser  } from '../../action/auth';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Noty from 'noty';
+
 import 'noty/lib/noty.css';
 import 'noty/lib/themes/sunset.css';
 import { setAlert } from '../../action/alert';
 
-export const Register = ({setAlert}) => {
+const Register = ({setAlert, registerUser}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     password2: '',
   });
+
 
   const { name, email, password, password2 } = formData;
 
@@ -24,19 +25,22 @@ export const Register = ({setAlert}) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      new Noty({
-        theme: 'sunset',
-        type: 'error',
-        text: 'las contraseñas no coinciden',
-        timeout: 3000,
-      }).show();
-      
-     setAlert('password do not match','danger')
+     
+      setAlert('Passwords do not match', 'error');
     } else {
-      let hola='hello'
-    //  pruebaL({name:hola})
      registerUser({ name, email, password });
+     clearForm();
+     setAlert('usuario creado correctamente', 'success');
     }
+  };
+
+  const clearForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      password: '',
+      password2: '',
+    });
   };
 
   return (
@@ -102,7 +106,11 @@ export const Register = ({setAlert}) => {
 };
 
 Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired
 };
 
-export default connect(null, { registerUser, setAlert,pruebaL })(Register);
+const mapStateToProps = (state) => ({
+
+});
+export default connect(mapStateToProps, { registerUser, setAlert })(Register);
