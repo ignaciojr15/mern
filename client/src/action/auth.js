@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { REGISTER_SUCCESS, REGISTER_FAIL ,USER_LOADED,AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL} from './types';
+
+import { REGISTER_SUCCESS, REGISTER_FAIL ,USER_LOADED,AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL,LOGOUT} from './types';
 import { setAlert } from './alert';
-import Noty from 'noty';
 import {setAuthToken} from '../Utils/setAuthToken';
+import { Navigate } from 'react-router-dom';
+
 export const pruebaL = ({ name }) => {
   console.log(name);
 };
@@ -16,6 +18,7 @@ export const loadUser = () => async dispatch => {
           type: USER_LOADED,
           payload: res.data
         });
+
   } catch (error) {
     dispatch({
       type: AUTH_ERROR
@@ -38,19 +41,21 @@ export const registerUser = ({ name, email, password }) => async dispatch => {
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+   
   } catch (error) {
     const errors = error.response.data.error;
     if (errors) {
-      let message = '';
       errors.forEach(error => { dispatch(setAlert(error.msg, 'danger')) });
     }
     dispatch({
       type: REGISTER_FAIL,
     });
+   
   }
 };
+
 //login user
-export const loginUser = (  email, password ) => async dispatch => {
+export const login = (  email, password ) => async dispatch => {
 
 
   const config = {
@@ -66,13 +71,22 @@ export const loginUser = (  email, password ) => async dispatch => {
       type: LOGIN_SUCCESS,
       payload: res.data
     });
+    dispatch(loadUser());
+   
+    window.location.replace('http://localhost:3000/dashboard');
   } catch (error) {
     const errors = error.response.data.error;
     if (errors) {
     
       errors.forEach(error => { dispatch(setAlert(error.msg, 'danger')) });
+      setAlert('credenciales incorrectas', 'error');
+      
     }
     dispatch({
       type: LOGIN_FAIL,
     });
+   
   }};
+  export const logout = () => dispatch => {
+    dispatch({type:LOGOUT})
+  }

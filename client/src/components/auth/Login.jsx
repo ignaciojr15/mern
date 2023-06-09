@@ -1,26 +1,36 @@
-import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Navigate  } from 'react-router-dom';
 import { connect } from 'react-redux'; 
 import PropTypes from 'prop-types';
-import { loginUser} from '../../action/auth'
+import { login} from '../../action/auth'
 
- export const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const Login = ({login, isAuthenticated, user}) => {
+    const [formData, setFormData] = useState({
+      email: '',
+      password: ''
+    });
+  
+    const { email, password } = formData;
+  
+    const onChange = (e) =>
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+  
+    const onSubmit = (e) => {
+      e.preventDefault();
+      login(email, password);
+      clearForm();
+    };
 
-  const { email, password } = formData;
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const clearForm = () => {
+      formData.email='';
+      formData.password=''
+    }; 
+    if (isAuthenticated) {
+      return <Navigate to="/dashboard" />;
+    }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-   // login(email, password);
-  };
 
- 
 
   return (
     <section className="container">
@@ -63,8 +73,9 @@ Login.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated
+   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(null, {loginUser})(Login);
+export default connect(mapStateToProps, {login})(Login);
+
 

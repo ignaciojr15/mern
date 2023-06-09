@@ -4,12 +4,13 @@ import {
     REGISTER_SUCCESS,
     USER_LOADED,
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    LOGOUT
   } from '../action/types';
   
   const initialState = {
     token: localStorage.getItem('token'),
-    isAuthenticated: null,
+    isAuthenticated: false,
     loading: true,
     user: null   
   };
@@ -36,6 +37,7 @@ import {
         }
       case REGISTER_FAIL:
       case  AUTH_ERROR:
+      case LOGOUT:
       case LOGIN_FAIL:
         localStorage.removeItem('token'); 
         return{

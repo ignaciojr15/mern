@@ -1,14 +1,14 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { registerUser  } from '../../action/auth';
-import { Link } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import 'noty/lib/noty.css';
 import 'noty/lib/themes/sunset.css';
 import { setAlert } from '../../action/alert';
 
-const Register = ({setAlert, registerUser}) => {
+const Register = ({setAlert, registerUser, isAuthenticated}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,6 +42,13 @@ const Register = ({setAlert, registerUser}) => {
       password2: '',
     });
   };
+  useEffect(() => {
+    console.log('isAuthenticated Register', isAuthenticated)
+  }, [isAuthenticated])
+
+    if(isAuthenticated){
+      return <Navigate to='/dashboard'/>
+    }
 
   return (
     <Fragment>
@@ -107,10 +114,11 @@ const Register = ({setAlert, registerUser}) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  registerUser: PropTypes.func.isRequired
+  registerUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({
-
+  isAuthenticated: state.auth.isAuthenticated
 });
 export default connect(mapStateToProps, { registerUser, setAlert })(Register);
