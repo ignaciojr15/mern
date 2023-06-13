@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const user = require('../models/user');
+const User = require('../models/user');
 
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
@@ -13,7 +13,10 @@ const { check, validationResult } = require('express-validator');
 //acces public 
 router.get('/', auth, async (req, res) => {
     try {
+        console.log('user before get auth')
         const user = await User.findById(req.user.id).select('-password');
+        console.log('user after get auth')
+
         res.json(user);
     } catch (err) {
         console.error(err.message);
@@ -38,7 +41,9 @@ router.post('/', [
     const  { email, password } = req.body;
 
     try {
+        console.log('before get user in login')
         let user = await User.findOne({ email });
+        console.log('user', user)
      
         if (!user) {
             return res
@@ -72,7 +77,7 @@ router.post('/', [
             }
         );
     } catch (err) {
-        console.error(err.message);
+        console.error('error post', err.message);
         res.status(500).send('Error del servidor');
     }
 });

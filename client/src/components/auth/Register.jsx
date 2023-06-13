@@ -29,7 +29,7 @@ const Register = ({setAlert, registerUser, isAuthenticated}) => {
       setAlert('Passwords do not match', 'error');
     } else {
      registerUser({ name, email, password });
-     clearForm();
+     //clearForm();
      setAlert('usuario creado correctamente', 'success');
     }
   };

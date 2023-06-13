@@ -3,7 +3,7 @@ const connectDB=require('./config/db');
 const listEndpoints = require('express-list-endpoints');
 const app=express();
 const cors = require('cors');
-connectDB();
+// connectDB();
 
 //init middlewere
 

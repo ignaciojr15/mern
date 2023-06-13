@@ -8,7 +8,9 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/user');
 
 
-
+router.get('/',((req,res)=>{
+  res.json("hola internauta");
+}))
 router.post('/', [
   check('name', 'Name is required').not().isEmpty(),
   check('email', 'Please include a valid email').isEmail(),
@@ -22,7 +24,9 @@ router.post('/', [
   const { name, email, password } = req.body;
 
   try {
+    console.log('entra aqui')
     let user = await User.findOne({ email });
+    console.log('useeer', user)
     if (user) {
       return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
     }
@@ -64,7 +68,7 @@ router.post('/', [
       }
     );
   } catch (err) {
-    console.error(err.message);
+    console.error('errooor', err.message);
     res.status(500).send('Server error');
   }
 });
