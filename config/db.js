@@ -18,9 +18,7 @@ const db = config.get("mongoURI");
 const DB = "mongodb+srv://ignacio:spain@atlascluster.cdc0jte.mongodb.net/test?retryWrites=true&w=majority"
 const connectDB = async () => {
   try {
-    await mongoose.connect(DB, {
-      useNewUrlParser: true,
-    })
+    await mongoose.connect(DB,  {useNewUrlParser: true, useUnifiedTopology: true})
     console.log('MongoDB Connected...')
   } catch (err) {
     console.error(err)

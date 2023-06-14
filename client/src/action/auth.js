@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { REGISTER_SUCCESS, REGISTER_FAIL ,USER_LOADED,AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL,LOGOUT} from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL ,USER_LOADED,AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL,LOGOUT,CLEAR_PROFILE} from './types';
 import { setAlert } from './alert';
 import {setAuthToken} from '../Utils/setAuthToken';
 import { Navigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ export const registerUser = ({ name, email, password }) => async dispatch => {
 
   try {
     const res = await axios.post('/api/users', body, config);
-    console.Console.log(res.data);
+    console.log(res.data);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data
@@ -74,7 +74,7 @@ export const login = (  email, password ) => async dispatch => {
     });
     dispatch(loadUser());
    
-    window.location.replace('http://localhost:3000/dashboard');
+    // window.location.replace('http://localhost:3000/dashboard');
   } catch (error) {
     const errors = error.response.data.error;
     if (errors) {
@@ -89,5 +89,6 @@ export const login = (  email, password ) => async dispatch => {
    
   }};
   export const logout = () => dispatch => {
-    dispatch({type:LOGOUT})
+    dispatch({type:CLEAR_PROFILE});
+    dispatch({type:LOGOUT});
   }

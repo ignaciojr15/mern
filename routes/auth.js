@@ -42,6 +42,7 @@ router.post('/', [
 
     try {
         console.log('before get user in login')
+       
         let user = await User.findOne({ email });
         console.log('user', user)
      

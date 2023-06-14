@@ -3,12 +3,12 @@ const connectDB=require('./config/db');
 const listEndpoints = require('express-list-endpoints');
 const app=express();
 const cors = require('cors');
-// connectDB();
+ connectDB();
 
 //init middlewere
 
 app.use(express.json({extended:false}));
-// Permitir solicitudes CORS desde http://localhost:3000
+
 app.use(cors());
 app.use('/api/users',require('./routes/users'));
 app.use('/api/auth',require('./routes/auth'));
