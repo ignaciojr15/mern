@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect,useState } from 'react';
+import React, {  useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCurrentProfile } from '../../action/profile';
-import { Spinner } from '../layout/Spinner';
-
+import Spinner  from '../layout/Spinner';
+import { DashboardAction } from './DashboardAction';
 const Dashboard = ({
 
   getCurrentProfile,
@@ -13,16 +13,15 @@ const Dashboard = ({
 }) => {
   useEffect(() => {
     getCurrentProfile();
-   setId(user.id);
-   console.log(id);
-  }, []);
-  const [id, setId] = useState('');
+  },[]);
+
 
   return (
     <section className="container">
       {profile !== null ? (
         <>
-          tienes perfil
+          welcome page {user  && user.name}
+          <DashboardAction/>
         </>
       ) : (
         <>

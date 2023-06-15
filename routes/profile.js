@@ -4,8 +4,9 @@ const config = require('config');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const normalize = require('normalize-url');
 // bring in normalize to give us a proper url, regardless of what user entered
-const normalize = import('normalize-url').then((module) => module.default);
+
 const checkObjectId = require('../middleware/checkObjectId');
 
 const Profile = require('../models/Profile');
@@ -30,7 +31,7 @@ router.get('/me', auth, async (req, res) => {
       
 
     res.json(profile);
-    console.log(profile);
+  
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -41,25 +42,25 @@ router.get('/me', auth, async (req, res) => {
 // @desc     Create or update user profile
 // @access   Private
 router.post(
+ 
   '/',
   auth,
-  check('status', 'Status is required').notEmpty(),
-  check('skills', 'Skills is required').notEmpty(),
+  
+    check('status', 'Status is required').not().isEmpty(),
+    check('skills', 'Skills is required').not().isEmpty()
+  ,
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
+    console.log(req.body)
+ 
+    // const errors = validationResult(req);
+    // console.log(errors);
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ errors: errors.array() });
+    // }
+   
     // destructure the request
     const {
-      website,
-      skills,
-      youtube,
-      twitter,
-      instagram,
-      linkedin,
-      facebook,
+      company, website, location, status, skills, githubusername, bio, twitter, facebook, linkedin, youtube, instagram,
       // spread the rest of the fields we don't need to check
       ...rest
     } = req.body;
@@ -74,12 +75,16 @@ router.post(
       skills: Array.isArray(skills)
         ? skills
         : skills.split(',').map((skill) => ' ' + skill.trim()),
-      ...rest
+      location,
+      company,
+      status,
+      githubusername,
+      bio
     };
 
     // Build socialFields object
     const socialFields = { youtube, twitter, instagram, linkedin, facebook };
-
+   
     // normalize social fields to ensure valid url
     for (const [key, value] of Object.entries(socialFields)) {
       if (value && value.length > 0)

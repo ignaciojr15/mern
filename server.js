@@ -1,12 +1,16 @@
 const express =require('express');
 const connectDB=require('./config/db');
 const listEndpoints = require('express-list-endpoints');
+const bodyParser = require('body-parser');
+
 const app=express();
 const cors = require('cors');
  connectDB();
 
 //init middlewere
-
+// Configurar el middleware body-parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({extended:false}));
 
 app.use(cors());

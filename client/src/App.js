@@ -11,8 +11,12 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { setAuthToken } from './Utils/setAuthToken';
 import { loadUser } from './action/auth';
+import  CreateProfile  from './components/profile-forms/CreateProfile';
+import EditProfile from './components/profile-forms/editProfile';
 import  Dashboard  from './components/Dashboard/Dashboard ';
 import PrivateRoute from './components/routing/PrivateRoute';
+import AddExperiences from './components/profile-forms/AddExperiences';
+
 if(localStorage.token){
   setAuthToken(localStorage.token);
 }
@@ -32,6 +36,9 @@ const App=()=> {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Landing />} />
         <Route path='/dashboard' element={<PrivateRoute component={Dashboard} />} />
+        <Route path='/create-profile' element={<PrivateRoute component={CreateProfile} />} />
+        <Route path='/edit-profile' element={<PrivateRoute component={EditProfile} />} />
+        <Route path='/add-experience' element={<PrivateRoute component={AddExperiences} />} />
         {/* <PrivateRoute /> */}
         <Route path="*" element={<h1>404 page not found</h1>} />
         </Routes> 

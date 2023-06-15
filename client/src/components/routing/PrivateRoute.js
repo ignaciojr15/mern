@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 
-const PrivateRoute = ({ component: Component, auth,...rest }) => {
-  console.log(auth);
+const PrivateRoute = ({ component: Component,profile, auth,...rest }) => {
+
   if (!auth.isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
