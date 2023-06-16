@@ -13,9 +13,11 @@ import { setAuthToken } from './Utils/setAuthToken';
 import { loadUser } from './action/auth';
 import  CreateProfile  from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/editProfile';
-import  Dashboard  from './components/Dashboard/Dashboard ';
+import  Dashboard  from './components/Dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import AddExperiences from './components/profile-forms/AddExperiences';
+import AddEducation from './components/profile-forms/AddEducation';
+import profile from './components/profiles/profile';
 
 if(localStorage.token){
   setAuthToken(localStorage.token);
@@ -39,6 +41,8 @@ const App=()=> {
         <Route path='/create-profile' element={<PrivateRoute component={CreateProfile} />} />
         <Route path='/edit-profile' element={<PrivateRoute component={EditProfile} />} />
         <Route path='/add-experience' element={<PrivateRoute component={AddExperiences} />} />
+        <Route path='/add-education' element={<PrivateRoute component={AddEducation} />} />
+        <Route path='/profiles' element={<PrivateRoute component={profile} />} />
         {/* <PrivateRoute /> */}
         <Route path="*" element={<h1>404 page not found</h1>} />
         </Routes> 
